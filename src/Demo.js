@@ -4,14 +4,15 @@ import React, { Component } from "react";
 import { createHistory } from "history";
 
 import SimpleCalendar from "./SimpleCalendar";
+import Range from "./Range";
 
 const history = createHistory();
 
 const EXAMPLES = {
-  simple: {
-    title: "Simple Calendar",
+  range: {
+    title: "Range-Drag Calendar",
     description: "This calendar shows the clicked day in an alert dialog.",
-    Component: SimpleCalendar
+    Component: Range
   }
 };
 
@@ -19,7 +20,7 @@ const EXAMPLES = {
 export default class Demo extends Component {
 
   render() {
-    const currentExample = 'simple';
+    const currentExample = 'range';
 
     const ExampleComponent = EXAMPLES[currentExample].Component;
 
