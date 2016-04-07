@@ -1,3 +1,5 @@
+import moment from "moment";
+
 /**
  * Return `d` as a new date with `n` months added.
  * @param {[type]} d
@@ -142,13 +144,31 @@ export function isDayInCollection(day, collection={selectedDates: []}) {
   }
 }
 
-export function addWeekDaysToCollection(weekday, collection={selectedDates: []}) {
+export function addWeekDaysToCollection(weekday, firstDayOfMonth, collection={selectedDates: []}) {
+  const d = new Date(firstDayOfMonth),
+    month = d.getMonth(),
+    myCollection = collection;
 
+  d.setDate(1);
+
+  // Get the first Monday in the month, use moment to avoid that sunday is 0
+  while (moment(d).weekday() !== weekday) {
+    d.setDate(d.getDate() + 1);
+  }
+
+  // Get all the other Mondays in the month
+  while (d.getMonth() === month) {
+    myCollection.selectedDates.push(d.getTime());
+    d.setDate(d.getDate() + 7);
+  }
+
+  return myCollection;
 }
 
 export default {
   addDayToRange,
   addDayToCollection,
+  addWeekDaysToCollection,
   addMonths,
   clone,
   isSameDay,

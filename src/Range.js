@@ -10,28 +10,34 @@ import "moment/locale/se";
 export default class Range extends React.Component {
 
   state = {
-    selectedDates: null
+    selectedDates: []
   };
 
   handleDayClick(e, day) {
     const collection = DateUtils.addDayToCollection(day.getTime(), this.state);
     this.setState(collection);
-    console.log(this.state);
-    console.log(collection);
-
   }
 
   handleResetClick(e) {
     e.preventDefault();
     this.setState({
-      selectedDates: null
+      selectedDates: [],
+      selectedWeeks: [],
+      selectedWeekDays: []
     });
   }
 
-  handleWeekDayClick(e, weekday) {
-    //const range = DateUtils.addDayToRange(weekday, this.state);
-    //this.setState(range);
-    console.log(weekday);
+  handleWeekDayClick(e, weekday, firstDayOfMonth, modifiers) {
+    const range = DateUtils.addWeekDaysToCollection(weekday, firstDayOfMonth, this.state);
+    this.setState(range);
+  }
+
+  renderSelectedDay(day) {
+    return(
+      <div>
+        {moment(day).format("L")}
+      </div>
+    );
   }
 
   render() {
@@ -44,13 +50,6 @@ export default class Range extends React.Component {
     return (
       <div className="RangeExample">
 
-        { !selectedDates && <p>Please select a <strong>day</strong>.</p> }
-        { selectedDates &&
-          <p>You chose { selectedDates }. <a
-              href="#" onClick={ this.handleResetClick.bind(this) }>Reset</a>
-          </p>
-        }
-
         <DayPicker
           ref="daypicker"
           numberOfMonths={ 2 }
@@ -60,6 +59,15 @@ export default class Range extends React.Component {
           LocaleUtils={LocaleUtils}
           locale="se"
         />
+
+        { !selectedDates && <p>Please select a <strong>day</strong>.</p> }
+        { selectedDates &&
+          <p>You chose the following dates: </p>
+        }
+        <div> { selectedDates.map(day => this.renderSelectedDay(day)) } </div>
+
+        <a href="#" onClick={ this.handleResetClick.bind(this) }>Reset</a>
+
       </div>
     );
   }

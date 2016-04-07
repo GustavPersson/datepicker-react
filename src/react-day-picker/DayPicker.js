@@ -438,7 +438,7 @@ export default class DayPicker extends Component {
     );
   }
 
-  renderWeekDays() {
+  renderWeekDays(date, i) {
     const { locale, localeUtils, onWeekDayClick} = this.props;
     const days = [];
 
@@ -448,7 +448,7 @@ export default class DayPicker extends Component {
       days.push(
         <div key={ i }
           onClick= { onWeekDayClick ?
-            (e) => this.handleWeekDayClick(e, i, modifiers) : null }
+            (e) => this.handleWeekDayClick(e, i, date, modifiers) : null }
           className="DayPicker-Weekday"
         >
           <abbr title={ localeUtils.formatWeekdayLong(i, locale) }>
