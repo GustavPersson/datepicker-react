@@ -2,43 +2,51 @@ import React from "react";
 import moment from "moment";
 import DayPicker from "./react-day-picker/DayPicker";
 import DateUtils from "./react-day-picker/DateUtils";
+import LocaleUtils from "./react-day-picker/LocaleUtils";
+
+import "moment/locale/se";
+
 
 export default class Range extends React.Component {
 
   state = {
-    from: null,
-    to: null
+    selectedDates: null
   };
 
   handleDayClick(e, day) {
-    const range = DateUtils.addDayToRange(day, this.state);
-    this.setState(range);
+    const collection = DateUtils.addDayToCollection(day.getTime(), this.state);
+    this.setState(collection);
+    console.log(this.state);
+    console.log(collection);
+
   }
 
   handleResetClick(e) {
     e.preventDefault();
     this.setState({
-      from: null,
-      to: null
+      selectedDates: null
     });
   }
 
+  handleWeekDayClick(e, weekday) {
+    //const range = DateUtils.addDayToRange(weekday, this.state);
+    //this.setState(range);
+    console.log(weekday);
+  }
+
   render() {
-    const { from, to } = this.state;
+    const { selectedDates } = this.state;
 
     const modifiers = {
-      selected: day => DateUtils.isDayInRange(day, this.state)
+      selected: day => DateUtils.isDayInCollection(day, this.state)
     };
 
     return (
       <div className="RangeExample">
 
-        { !from && !to && <p>Please select the <strong>first day</strong>.</p> }
-        { from && !to && <p>Please select the <strong>last day</strong>.</p> }
-        { from && to &&
-          <p>You chose from {
-              moment(from).format("L") } to {
-              moment(to).format("L") }. <a
+        { !selectedDates && <p>Please select a <strong>day</strong>.</p> }
+        { selectedDates &&
+          <p>You chose { selectedDates }. <a
               href="#" onClick={ this.handleResetClick.bind(this) }>Reset</a>
           </p>
         }
@@ -48,6 +56,9 @@ export default class Range extends React.Component {
           numberOfMonths={ 2 }
           modifiers={ modifiers }
           onDayClick={ this.handleDayClick.bind(this) }
+          onWeekDayClick={this.handleWeekDayClick.bind(this)}
+          LocaleUtils={LocaleUtils}
+          locale="se"
         />
       </div>
     );

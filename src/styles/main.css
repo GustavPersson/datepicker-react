@@ -238,8 +238,18 @@ select {
 }
 
 .Examples {
+  display: flex;
   flex: 1;
   padding: 1em;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+}
+
+.Examples > h2,
+.Examples > p {
+  flex: 1 1 auto;
+  align-self: center;
 }
 
 .Example {

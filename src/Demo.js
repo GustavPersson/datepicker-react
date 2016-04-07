@@ -9,9 +9,9 @@ import Range from "./Range";
 const history = createHistory();
 
 const EXAMPLES = {
-  range: {
-    title: "Range-Drag Calendar",
-    description: "This calendar shows the clicked day in an alert dialog.",
+  demo: {
+    title: "Date Range Calendar",
+    description: "A calendar that supports dragging, week selections, and some more. Based on react-day-picker.",
     Component: Range
   }
 };
@@ -20,7 +20,7 @@ const EXAMPLES = {
 export default class Demo extends Component {
 
   render() {
-    const currentExample = 'range';
+    const currentExample = "demo";
 
     const ExampleComponent = EXAMPLES[currentExample].Component;
 
@@ -28,20 +28,6 @@ export default class Demo extends Component {
       <div>
 
         <div>
-          <div className="NavBar">
-            <div className="NavBar-wrapper">
-              <h3>Examples</h3>
-
-              <h3 style={{paddingTop: "1rem"}}>About</h3>
-              <a href="http://www.gpbl.org/react-day-picker">
-                Documentation
-              </a>
-              <a href="https://github.com/gpbl/react-day-picker">
-                Github
-              </a>
-            </div>
-          </div>
-
           <div className="Examples">
             <h2>
                 { EXAMPLES[currentExample].title }

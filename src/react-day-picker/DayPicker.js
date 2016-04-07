@@ -54,6 +54,11 @@ export default class DayPicker extends Component {
     onMonthChange: PropTypes.func,
     onCaptionClick: PropTypes.func,
 
+    onDayMouseDown: PropTypes.func,
+    onDayMouseUp: PropTypes.func,
+    onWeekDayClick: PropTypes.func,
+    onWeekNumberClick: PropTypes.func,
+
     renderDay: PropTypes.func,
 
     captionElement: PropTypes.element
@@ -311,6 +316,35 @@ export default class DayPicker extends Component {
     this.props.onCaptionClick(e, currentMonth);
   }
 
+  onDayMouseDown(e, day, modifiers) {
+    e.persist();
+    if (modifiers.indexOf("outside") > -1) {
+      this.handleOutsideDayPress(day);
+    }
+    this.props.onDayMouseDown(e, day);
+  }
+
+  onDayMouseUp(e, day, modifiers) {
+    e.persist();
+    if (modifiers.indexOf("outside") > -1) {
+      this.handleOutsideDayPress(day);
+    }
+    this.props.onDayMouseUp(e, day);
+  }
+
+  onWeekNumberClick(e, week, modifiers) {
+
+  }
+
+  onWeekDayClick(e, weekday, modifiers) {
+
+  }
+
+  handleWeekDayClick(e, weekday, modifiers) {
+    e.persist();
+    this.props.onWeekDayClick(e, weekday, modifiers);
+  }
+
   handleDayTouchTap(e, day, modifiers) {
     e.persist();
     if (modifiers.indexOf("outside") > -1) {
@@ -394,7 +428,7 @@ export default class DayPicker extends Component {
 
         <div className="DayPicker-Weekdays" role="rowgroup">
           <div className="DayPicker-WeekdaysRow" role="columnheader">
-            { this.renderWeekDays() }
+            { this.renderWeekDays(date) }
           </div>
         </div>
         <div className="DayPicker-Body" role="rowgroup">
@@ -405,11 +439,18 @@ export default class DayPicker extends Component {
   }
 
   renderWeekDays() {
-    const { locale, localeUtils } = this.props;
+    const { locale, localeUtils, onWeekDayClick} = this.props;
     const days = [];
+
+    let modifiers = [];
+
     for (let i = 0; i < 7; i++) {
       days.push(
-        <div key={ i } className="DayPicker-Weekday">
+        <div key={ i }
+          onClick= { onWeekDayClick ?
+            (e) => this.handleWeekDayClick(e, i, modifiers) : null }
+          className="DayPicker-Weekday"
+        >
           <abbr title={ localeUtils.formatWeekdayLong(i, locale) }>
             { localeUtils.formatWeekdayShort(i, locale) }
           </abbr>

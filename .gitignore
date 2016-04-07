@@ -6,3 +6,4 @@ npm-debug.log
 _book
 lib
 _site
+.DS_store

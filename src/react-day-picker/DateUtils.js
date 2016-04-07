@@ -117,12 +117,43 @@ export function isDayInRange(day, range) {
     (from && to && isDayBetween(day, from, to));
 }
 
+export function addDayToCollection(day, collection={selectedDates: []}) {
+  const myCollection = collection;
+
+  if(!myCollection.selectedDates) {
+    myCollection.selectedDates = [day];
+  } else if (myCollection.selectedDates.indexOf(day) < 0) {
+    myCollection.selectedDates.push(day);
+  } else if (myCollection.selectedDates.indexOf(day) > -1) {
+    myCollection.selectedDates.splice(myCollection.selectedDates.indexOf(day), 1);
+  }
+  return myCollection;
+}
+
+export function isDayInCollection(day, collection={selectedDates: []}) {
+  const myCollection = collection;
+
+  if (myCollection.selectedDates) {
+    if (myCollection.selectedDates.indexOf(day.getTime()) > -1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+export function addWeekDaysToCollection(weekday, collection={selectedDates: []}) {
+
+}
+
 export default {
   addDayToRange,
+  addDayToCollection,
   addMonths,
   clone,
   isSameDay,
   isDayInRange,
+  isDayInCollection,
   isDayBetween,
   isPastDay
 }

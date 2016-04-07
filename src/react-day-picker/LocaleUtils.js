@@ -1,8 +1,8 @@
-const WEEKDAYS_LONG = ["Sunday", "Monday", "Tuesday",
-  "Wednesday", "Thursday", "Friday", "Saturday"];
+const WEEKDAYS_LONG = ["Monday", "Tuesday",
+  "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-const WEEKDAYS_SHORT = ["Su", "Mo", "Tu",
-  "We", "Th", "Fr", "Sa"];
+const WEEKDAYS_SHORT = ["Mo", "Tu",
+  "We", "Th", "Fr", "Sa", "Su"];
 
 const MONTHS = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"];
@@ -20,7 +20,7 @@ export function formatWeekdayLong(i) {
 }
 
 export function getFirstDayOfWeek() {
-  return 0;
+  return 1;
 }
 
 export function getMonths() {
