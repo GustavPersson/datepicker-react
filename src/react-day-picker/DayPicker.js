@@ -32,6 +32,7 @@ export default class DayPicker extends Component {
     numberOfMonths: PropTypes.number,
 
     modifiers: PropTypes.object,
+    weekdayModifiers: PropTypes.object,
 
     locale: PropTypes.string,
     localeUtils: PropTypes.shape({
@@ -340,9 +341,9 @@ export default class DayPicker extends Component {
 
   }
 
-  handleWeekDayClick(e, weekday, modifiers) {
+  handleWeekDayClick(e, weekday, weekdayModifiers) {
     e.persist();
-    this.props.onWeekDayClick(e, weekday, modifiers);
+    this.props.onWeekDayClick(e, weekday, weekdayModifiers);
   }
 
   handleDayTouchTap(e, day, modifiers) {
@@ -439,20 +440,33 @@ export default class DayPicker extends Component {
   }
 
   renderWeekDays(date, i) {
-    const { locale, localeUtils, onWeekDayClick} = this.props;
+    const { locale, localeUtils, onWeekDayClick, weekdayModifiers } = this.props;
     const days = [];
 
-    let modifiers = [];
+
 
     for (let i = 0; i < 7; i++) {
+      let modifiers = [];
+
+      let className = "DayPicker-Weekday";
+
+      const selected = weekdayModifiers.weekdaySelected(i);
+
+      if (selected) {
+        modifiers.push("selected");
+      }
+
+      className += modifiers.map(modifier => ` ${className}--${modifier}`).join("");
+
       days.push(
         <div key={ i }
           onClick= { onWeekDayClick ?
             (e) => this.handleWeekDayClick(e, i, date, modifiers) : null }
-          className="DayPicker-Weekday"
+          className = {className}
         >
           <abbr title={ localeUtils.formatWeekdayLong(i, locale) }>
-            { localeUtils.formatWeekdayShort(i, locale) }
+            { !selected && localeUtils.formatWeekdayShort(i, locale) }
+            { selected && ""}
           </abbr>
         </div>
       );

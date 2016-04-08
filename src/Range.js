@@ -10,7 +10,9 @@ import "moment/locale/se";
 export default class Range extends React.Component {
 
   state = {
-    selectedDates: []
+    selectedDates: [],
+    selectedWeeks: [],
+    selectedWeekDays: []
   };
 
   handleDayClick(e, day) {
@@ -28,7 +30,14 @@ export default class Range extends React.Component {
   }
 
   handleWeekDayClick(e, weekday, firstDayOfMonth, modifiers) {
-    const range = DateUtils.addWeekDaysToCollection(weekday, firstDayOfMonth, this.state);
+    let range;
+
+    if (this.state.selectedWeekDays.indexOf(weekday) < 0) {
+      range = DateUtils.addWeekDaysToCollection(weekday, firstDayOfMonth, this.state);
+    } else {
+      range = DateUtils.removeWeekDaysFromCollection(weekday, firstDayOfMonth, this.state);
+    }
+
     this.setState(range);
   }
 
@@ -47,13 +56,18 @@ export default class Range extends React.Component {
       selected: day => DateUtils.isDayInCollection(day, this.state)
     };
 
+    const weekdayModifiers = {
+      weekdaySelected: weekday => DateUtils.isWeekdayInCollection(weekday, this.state)
+    };
+
     return (
       <div className="RangeExample">
 
         <DayPicker
           ref="daypicker"
-          numberOfMonths={ 2 }
+          numberOfMonths={ 1 }
           modifiers={ modifiers }
+          weekdayModifiers = { weekdayModifiers }
           onDayClick={ this.handleDayClick.bind(this) }
           onWeekDayClick={this.handleWeekDayClick.bind(this)}
           LocaleUtils={LocaleUtils}

@@ -65,7 +65,19 @@
         font-size: .875em;
         text-align: center;
         color: #8b9898;
+        cursor: pointer;
       }
+
+      .DayPicker-Weekday--selected {
+        color: #FFF;
+        background-color: #4A90E2;
+        border-radius: 100%;
+      }
+
+        .DayPicker-Weekday--selected::before {
+          content: "\f00c";
+          font-family: "FontAwesome";
+        }
 
   .DayPicker-Body {
     display: table-row-group;

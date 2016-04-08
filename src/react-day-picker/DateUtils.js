@@ -132,16 +132,8 @@ export function addDayToCollection(day, collection={selectedDates: []}) {
   return myCollection;
 }
 
-export function isDayInCollection(day, collection={selectedDates: []}) {
-  const myCollection = collection;
-
-  if (myCollection.selectedDates) {
-    if (myCollection.selectedDates.indexOf(day.getTime()) > -1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+export function isDayInCollection(day, collection) {
+  return collection.selectedDates.indexOf(day.getTime()) > -1;
 }
 
 export function addWeekDaysToCollection(weekday, firstDayOfMonth, collection={selectedDates: []}) {
@@ -162,6 +154,37 @@ export function addWeekDaysToCollection(weekday, firstDayOfMonth, collection={se
     d.setDate(d.getDate() + 7);
   }
 
+  myCollection.selectedWeekDays.push(weekday);
+
+  return myCollection;
+}
+
+export function isWeekdayInCollection(weekday, collection) {
+  return collection.selectedWeekDays.indexOf(weekday) > -1;
+}
+
+export function removeWeekDaysFromCollection(weekday, firstDayOfMonth, collection={selectedDates: []}) {
+  const d = new Date(firstDayOfMonth),
+    month = d.getMonth(),
+    myCollection = collection;
+
+  d.setDate(1);
+
+  // Get the first Monday in the month, use moment to avoid that sunday is 0
+  while (moment(d).weekday() !== weekday) {
+    d.setDate(d.getDate() + 1);
+  }
+
+  // Get all the other Mondays in the month
+  while (d.getMonth() === month) {
+    const selectedDateIndex = myCollection.selectedDates.indexOf(d.getTime());
+    myCollection.selectedDates.splice(selectedDateIndex, 1);
+    d.setDate(d.getDate() + 7);
+  }
+
+  const weekdayIndex = myCollection.selectedWeekDays.indexOf(weekday);
+  myCollection.selectedWeekDays.splice(weekdayIndex, 1);
+
   return myCollection;
 }
 
@@ -175,5 +198,7 @@ export default {
   isDayInRange,
   isDayInCollection,
   isDayBetween,
-  isPastDay
+  isPastDay,
+  isWeekdayInCollection,
+  removeWeekDaysFromCollection
 }
