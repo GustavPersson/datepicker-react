@@ -3,9 +3,9 @@ import moment from "moment";
 import DayPicker from "./react-day-picker/DayPicker";
 import DateUtils from "./react-day-picker/DateUtils";
 import LocaleUtils from "./react-day-picker/LocaleUtils";
+import Helpers from "./react-day-picker/Helpers";
 
 import "moment/locale/se";
-
 
 export default class Range extends React.Component {
 
@@ -16,7 +16,29 @@ export default class Range extends React.Component {
   };
 
   handleDayClick(e, day) {
-    const collection = DateUtils.addDayToCollection(day.getTime(), this.state);
+    let collection = null;
+
+    if (this.state.selectedWeekDays.length > 0 && DateUtils.isDayInCollection(day, this.state)) {
+      this.state = {
+        selectedDates: [],
+        selectedWeeks: [],
+        selectedWeekDays: []
+      };
+
+      collection = DateUtils.addDayToCollection(day.getTime(), this.state);
+    } else if (this.state.selectedWeekDays.length > 0) {
+      this.state = {
+        selectedDates: [],
+        selectedWeeks: [],
+        selectedWeekDays: []
+      };
+
+      const firstDayOfMonth = Helpers.getFirstDayOfMonth(day);
+      collection = DateUtils.addWeekDaysToCollection(moment(day).weekday(), firstDayOfMonth, this.state);
+    } else {
+      collection = DateUtils.addDayToCollection(day.getTime(), this.state);
+    }
+
     this.setState(collection);
   }
 
@@ -39,6 +61,14 @@ export default class Range extends React.Component {
     }
 
     this.setState(range);
+  }
+
+  resetState() {
+    this.setState({
+      selectedDates: [],
+      selectedWeeks: [],
+      selectedWeekDays: []
+    });
   }
 
   renderSelectedDay(day) {

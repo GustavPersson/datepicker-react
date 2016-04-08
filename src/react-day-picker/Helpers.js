@@ -86,3 +86,7 @@ export function startOfMonth(d) {
   newDate.setHours(12, 0, 0, 0); // always set noon to avoid time zone issues
   return newDate;
 }
+
+export default {
+  getFirstDayOfMonth
+}
