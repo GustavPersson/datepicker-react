@@ -60,6 +60,8 @@ export default class DayPicker extends Component {
     onWeekDayClick: PropTypes.func,
     onWeekNumberClick: PropTypes.func,
 
+    onWeekDayDrag: PropTypes.func,
+
     renderDay: PropTypes.func,
 
     captionElement: PropTypes.element
@@ -333,11 +335,21 @@ export default class DayPicker extends Component {
     this.props.onDayMouseUp(e, day);
   }
 
-  onWeekNumberClick(e, week, modifiers) {
+  handleWeekDayMouseDown(e, weekday, weekdayModifiers) {
+    e.persist();
 
+
+    this.state.weekDayDrag = {
+      start: weekday,
+      end: null
+    };
   }
 
-  onWeekDayClick(e, weekday, modifiers) {
+  handleWeekDayMouseUp(e, weekday, weekdayModifiers) {
+    e.persist();
+
+    this.state.weekDayDrag.end = weekday;
+    this.props.onWeekDayDrag(e, this.state.weekDayDrag.start, this.state.weekDayDrag.end, weekdayModifiers);
 
   }
 
@@ -440,7 +452,7 @@ export default class DayPicker extends Component {
   }
 
   renderWeekDays(date, i) {
-    const { locale, localeUtils, onWeekDayClick, weekdayModifiers } = this.props;
+    const { locale, localeUtils, onWeekDayClick, onWeekDayDrag, weekdayModifiers } = this.props;
     const days = [];
 
 
@@ -462,6 +474,10 @@ export default class DayPicker extends Component {
         <div key={ i }
           onClick= { onWeekDayClick ?
             (e) => this.handleWeekDayClick(e, i, date, modifiers) : null }
+          onMouseDown= { onWeekDayDrag ?
+            (e) => this.handleWeekDayMouseDown(e, i, date, modifiers) : null }
+          onMouseUp= { onWeekDayDrag ?
+            (e) => this.handleWeekDayMouseUp(e, i, date, modifiers) : null }
           className = {className}
         >
           <abbr title={ localeUtils.formatWeekdayLong(i, locale) }>

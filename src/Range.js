@@ -16,51 +16,69 @@ export default class Range extends React.Component {
   };
 
   handleDayClick(e, day) {
-    let collection = null;
+    let state = this.state;
 
-    if (this.state.selectedWeekDays.length > 0 && DateUtils.isDayInCollection(day, this.state)) {
-      this.state = {
+    if (this.state.selectedWeekDays.length > 0 && DateUtils.isDayInCollection(day, state)) {
+      state = {
         selectedDates: [],
         selectedWeeks: [],
         selectedWeekDays: []
       };
 
-      collection = DateUtils.addDayToCollection(day.getTime(), this.state);
+      state = DateUtils.addDayToCollection(day.getTime(), state);
     } else if (this.state.selectedWeekDays.length > 0) {
-      this.state = {
+
+      state = {
         selectedDates: [],
         selectedWeeks: [],
         selectedWeekDays: []
       };
 
       const firstDayOfMonth = Helpers.getFirstDayOfMonth(day);
-      collection = DateUtils.addWeekDaysToCollection(moment(day).weekday(), firstDayOfMonth, this.state);
+      state = DateUtils.addWeekDaysToCollection(moment(day).weekday(), firstDayOfMonth, state);
     } else {
-      collection = DateUtils.addDayToCollection(day.getTime(), this.state);
+      state = DateUtils.addDayToCollection(day.getTime(), state);
     }
 
-    this.setState(collection);
+    this.setState(state);
   }
 
   handleResetClick(e) {
     e.preventDefault();
-    this.setState({
-      selectedDates: [],
-      selectedWeeks: [],
-      selectedWeekDays: []
-    });
+    this.resetState();
   }
 
   handleWeekDayClick(e, weekday, firstDayOfMonth, modifiers) {
-    let range;
+    let state = this.state;
 
-    if (this.state.selectedWeekDays.indexOf(weekday) < 0) {
-      range = DateUtils.addWeekDaysToCollection(weekday, firstDayOfMonth, this.state);
+    if (state.selectedWeekDays.indexOf(weekday) < 0) {
+      state = DateUtils.addWeekDaysToCollection(weekday, firstDayOfMonth, state);
     } else {
-      range = DateUtils.removeWeekDaysFromCollection(weekday, firstDayOfMonth, this.state);
+      state = DateUtils.removeWeekDaysFromCollection(weekday, firstDayOfMonth, state);
     }
 
-    this.setState(range);
+    this.setState(state);
+  }
+
+  handleWeekDayDrag(e, start, end, firstDayOfMonth) {
+    let state = this.state;
+
+    if (start > end) {
+      //switch place of start and end because user dragged backwards
+      const tempStart = start;
+      start = end;
+      end = tempStart;
+    }
+
+    for (let weekday = start; weekday <= end; weekday++) {
+      if (state.selectedWeekDays.indexOf(weekday) < 0) {
+        state = DateUtils.addWeekDaysToCollection(weekday, firstDayOfMonth, state);
+      } else {
+        state = DateUtils.removeWeekDaysFromCollection(weekday, firstDayOfMonth, state);
+      }
+    }
+
+    this.setState(state);
   }
 
   resetState() {
@@ -99,7 +117,7 @@ export default class Range extends React.Component {
           modifiers={ modifiers }
           weekdayModifiers = { weekdayModifiers }
           onDayClick={ this.handleDayClick.bind(this) }
-          onWeekDayClick={this.handleWeekDayClick.bind(this)}
+          onWeekDayDrag={this.handleWeekDayDrag.bind(this)}
           LocaleUtils={LocaleUtils}
           locale="se"
         />
