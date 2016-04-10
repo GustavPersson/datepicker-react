@@ -66,6 +66,7 @@
         text-align: center;
         color: #8b9898;
         cursor: pointer;
+        transition: background .2s ease-in-out;
       }
 
       .DayPicker-Weekday--selected {
@@ -94,6 +95,7 @@
         text-align: center;
         cursor: pointer;
         vertical-align: middle;
+        transition: background .2s ease-in-out, color .2s ease-in-out;
       }
 
   .DayPicker--interactionDisabled .DayPicker-Day {

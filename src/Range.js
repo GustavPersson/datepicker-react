@@ -15,7 +15,7 @@ export default class Range extends React.Component {
     selectedWeekDays: []
   };
 
-  handleDayClick(e, day) {
+  handleDayClick(e, day, modifiers) {
     let state = this.state;
 
     if (this.state.selectedWeekDays.length > 0 && DateUtils.isDayInCollection(day, state)) {
@@ -41,6 +41,26 @@ export default class Range extends React.Component {
     }
 
     this.setState(state);
+  }
+
+  handleDayDrag(e, start, end) {
+
+  }
+
+  handleDayMouseDown(e, day, modifiers) {
+    this.handleDayClick(e, day, modifiers);
+  }
+
+  handleDayMouseUp(e, day, modifiers) {
+
+  }
+
+  handleDayMouseEnter(e, day, modifiers, dragging) {
+    if (dragging) {
+      let state = this.state;
+      state = DateUtils.addDayToCollection(day.getTime(), state);
+      this.setState(state);
+    }
   }
 
   handleResetClick(e) {
@@ -113,12 +133,14 @@ export default class Range extends React.Component {
 
         <DayPicker
           ref="daypicker"
-          numberOfMonths={ 1 }
-          modifiers={ modifiers }
+          numberOfMonths = { 1 }
+          modifiers = { modifiers }
           weekdayModifiers = { weekdayModifiers }
-          onDayClick={ this.handleDayClick.bind(this) }
-          onWeekDayDrag={this.handleWeekDayDrag.bind(this)}
-          LocaleUtils={LocaleUtils}
+          onDayMouseDown = {this.handleDayMouseDown.bind(this)}
+          onDayMouseUp = {this.handleDayMouseUp.bind(this) }
+          onDayMouseEnter = {this.handleDayMouseEnter.bind(this)}
+          onWeekDayDrag = {this.handleWeekDayDrag.bind(this)}
+          LocaleUtils = {LocaleUtils}
           locale="se"
         />
 

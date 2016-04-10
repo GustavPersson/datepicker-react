@@ -61,6 +61,7 @@ export default class DayPicker extends Component {
     onWeekNumberClick: PropTypes.func,
 
     onWeekDayDrag: PropTypes.func,
+    onDayDrag: PropTypes.func,
 
     renderDay: PropTypes.func,
 
@@ -319,25 +320,28 @@ export default class DayPicker extends Component {
     this.props.onCaptionClick(e, currentMonth);
   }
 
-  onDayMouseDown(e, day, modifiers) {
+  handleDayMouseDown(e, day, modifiers) {
     e.persist();
     if (modifiers.indexOf("outside") > -1) {
-      this.handleOutsideDayPress(day);
+      //this.handleOutsideDayPress(day);
     }
-    this.props.onDayMouseDown(e, day);
+    this.state.draggingDay = true;
+
+    this.props.onDayMouseDown(e, day, modifiers);
   }
 
-  onDayMouseUp(e, day, modifiers) {
+  handleDayMouseUp(e, day, modifiers) {
     e.persist();
     if (modifiers.indexOf("outside") > -1) {
-      this.handleOutsideDayPress(day);
+      //this.handleOutsideDayPress(day);
     }
-    this.props.onDayMouseUp(e, day);
+    this.state.draggingDay = false;
+
+    this.props.onDayMouseUp(e, day, modifiers);
   }
 
   handleWeekDayMouseDown(e, weekday, weekdayModifiers) {
     e.persist();
-
 
     this.state.weekDayDrag = {
       start: weekday,
@@ -350,7 +354,6 @@ export default class DayPicker extends Component {
 
     this.state.weekDayDrag.end = weekday;
     this.props.onWeekDayDrag(e, this.state.weekDayDrag.start, this.state.weekDayDrag.end, weekdayModifiers);
-
   }
 
   handleWeekDayClick(e, weekday, weekdayModifiers) {
@@ -377,7 +380,8 @@ export default class DayPicker extends Component {
 
   handleDayMouseEnter(e, day, modifiers) {
     e.persist();
-    this.props.onDayMouseEnter(e, day, modifiers);
+
+    this.props.onDayMouseEnter(e, day, modifiers, this.state.draggingDay);
   }
 
   handleDayMouseLeave(e, day, modifiers) {
@@ -529,7 +533,7 @@ export default class DayPicker extends Component {
       return <div key={ `outside-${key}` } className={ className } />;
     }
 
-    const { onDayMouseEnter, onDayMouseLeave, onDayTouchTap, onDayClick }
+    const { onDayMouseEnter, onDayMouseLeave, onDayTouchTap, onDayClick, onDayMouseUp, onDayMouseDown }
       = this.props;
     let tabIndex = null;
     if ((onDayTouchTap || onDayClick) && !isOutside) {
@@ -560,6 +564,10 @@ export default class DayPicker extends Component {
           (e) => this.handleDayClick(e, day, modifiers) : null }
         onTouchTap= { onDayTouchTap ?
           (e) => this.handleDayTouchTap(e, day, modifiers) : null }
+        onMouseDown= { onDayMouseDown ?
+          (e) => this.handleDayMouseDown(e, day, modifiers) : null }
+        onMouseUp= { onDayMouseUp ?
+          (e) => this.handleDayMouseUp(e, day, modifiers) : null }
         >
         { this.props.renderDay(day) }
       </div>
