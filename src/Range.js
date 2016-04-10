@@ -62,6 +62,19 @@ export default class Range extends React.Component {
       this.setState(state);
     }
   }
+  handleWeekDayMouseDown(e, weekday, weekdayModifiers) {
+    this.handleWeekDayClick(e, weekday, weekdayModifiers);
+  }
+
+  handleWeekDayMouseUp(e, weekday, weekdayModifiers) {
+
+  }
+
+  handleWeekDayMouseEnter(e, weekday, weekdayModifiers, dragging) {
+    if (dragging) {
+      this.handleWeekDayClick(e, weekday, weekdayModifiers);
+    }
+  }
 
   handleResetClick(e) {
     e.preventDefault();
@@ -139,7 +152,9 @@ export default class Range extends React.Component {
           onDayMouseDown = {this.handleDayMouseDown.bind(this)}
           onDayMouseUp = {this.handleDayMouseUp.bind(this) }
           onDayMouseEnter = {this.handleDayMouseEnter.bind(this)}
-          onWeekDayDrag = {this.handleWeekDayDrag.bind(this)}
+          onWeekDayMouseDown = {this.handleWeekDayMouseDown.bind(this)}
+          onWeekDayMouseUp = {this.handleWeekDayMouseUp.bind(this) }
+          onWeekDayMouseEnter = {this.handleWeekDayMouseEnter.bind(this)}
           LocaleUtils = {LocaleUtils}
           locale="se"
         />

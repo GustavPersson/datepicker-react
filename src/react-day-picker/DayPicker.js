@@ -60,6 +60,10 @@ export default class DayPicker extends Component {
     onWeekDayClick: PropTypes.func,
     onWeekNumberClick: PropTypes.func,
 
+    onWeekDayMouseEnter: PropTypes.func,
+    onWeekDayMouseDown: PropTypes.func,
+    onWeekDayMouseUp: PropTypes.func,
+
     onWeekDayDrag: PropTypes.func,
     onDayDrag: PropTypes.func,
 
@@ -343,22 +347,31 @@ export default class DayPicker extends Component {
   handleWeekDayMouseDown(e, weekday, weekdayModifiers) {
     e.persist();
 
-    this.state.weekDayDrag = {
-      start: weekday,
-      end: null
-    };
+    this.state.weekDayDragging = true;
+    this.props.onWeekDayMouseDown(e, weekday, weekdayModifiers);
   }
 
   handleWeekDayMouseUp(e, weekday, weekdayModifiers) {
     e.persist();
+    this.state.weekDayDragging = false;
 
-    this.state.weekDayDrag.end = weekday;
-    this.props.onWeekDayDrag(e, this.state.weekDayDrag.start, this.state.weekDayDrag.end, weekdayModifiers);
+    this.props.onWeekDayMouseUp(e, weekday, weekdayModifiers);
   }
 
   handleWeekDayClick(e, weekday, weekdayModifiers) {
     e.persist();
     this.props.onWeekDayClick(e, weekday, weekdayModifiers);
+  }
+
+  handleWeekDayMouseEnter(e, day, modifiers) {
+    e.persist();
+
+    this.props.onWeekDayMouseEnter(e, day, modifiers, this.state.weekDayDragging);
+  }
+
+  handleWeekDayMouseLeave(e, day, modifiers) {
+    e.persist();
+    this.props.onDayMouseLeave(e, day, modifiers);
   }
 
   handleDayTouchTap(e, day, modifiers) {
@@ -456,10 +469,8 @@ export default class DayPicker extends Component {
   }
 
   renderWeekDays(date, i) {
-    const { locale, localeUtils, onWeekDayClick, onWeekDayDrag, weekdayModifiers } = this.props;
+    const { locale, localeUtils, onWeekDayClick, onWeekDayMouseDown,onWeekDayMouseUp,onWeekDayMouseEnter, weekdayModifiers } = this.props;
     const days = [];
-
-
 
     for (let i = 0; i < 7; i++) {
       let modifiers = [];
@@ -478,10 +489,12 @@ export default class DayPicker extends Component {
         <div key={ i }
           onClick= { onWeekDayClick ?
             (e) => this.handleWeekDayClick(e, i, date, modifiers) : null }
-          onMouseDown= { onWeekDayDrag ?
+          onMouseDown= { onWeekDayMouseDown ?
             (e) => this.handleWeekDayMouseDown(e, i, date, modifiers) : null }
-          onMouseUp= { onWeekDayDrag ?
+          onMouseUp= { onWeekDayMouseUp ?
             (e) => this.handleWeekDayMouseUp(e, i, date, modifiers) : null }
+          onMouseEnter = { onWeekDayMouseEnter ?
+            (e) => this.handleWeekDayMouseEnter(e, i, date, modifiers) : null }
           className = {className}
         >
           <abbr title={ localeUtils.formatWeekdayLong(i, locale) }>

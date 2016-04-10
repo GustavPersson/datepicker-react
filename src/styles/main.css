@@ -66,7 +66,7 @@
         text-align: center;
         color: #8b9898;
         cursor: pointer;
-        transition: background .2s ease-in-out;
+        transition: background .2s ease-in-out, border-radius .4s ease-in-out, color .2s ease-in-out;
       }
 
       .DayPicker-Weekday--selected {
