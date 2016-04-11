@@ -1,3 +1,5 @@
+
+
 /* DayPicker styles */
 
 .DayPicker {
@@ -59,7 +61,8 @@
       display: table-row;
     }
 
-      .DayPicker-Weekday {
+      .DayPicker-Weekday,
+      .DayPicker-Weekday-Weeknumber {
         display: table-cell;
         padding: .5rem;
         font-size: .875em;
@@ -68,6 +71,25 @@
         cursor: pointer;
         transition: background .2s ease-in-out, border-radius .4s ease-in-out, color .2s ease-in-out;
       }
+
+      .DayPicker-Weekday-Weeknumber {
+        cursor: initial;
+        background-color: #eaecec;
+      }
+
+      .DayPicker-Weekday:hover {
+        background-color: #e1e1e1;
+        border-radius: 100%;
+      }
+
+      .DayPicker-Weekday:hover abbr {
+        display: none;
+      }
+
+        .DayPicker-Weekday:hover::before {
+          content: "\f00c";
+          font-family: "FontAwesome";
+        }
 
       .DayPicker-Weekday--selected {
         color: #FFF;
@@ -86,6 +108,17 @@
 
     .DayPicker-Week {
       display: table-row;
+    }
+
+    .DayPicker-Week-Number {
+      display: table-cell;
+      padding: .5rem;
+      border: 1px solid #eaecec;
+      text-align: center;
+      cursor: pointer;
+      vertical-align: middle;
+      transition: background .2s ease-in-out, color .2s ease-in-out;
+      background-color: #eaecec;
     }
 
       .DayPicker-Day {
@@ -132,7 +165,14 @@
   background-color: #4A90E2;
 }
 
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
 
+*, *:before, *:after {
+  box-sizing: inherit;
+}
 
 body {
   font-family: -apple-system, "Helvetica Neue", "Helvetica", "Arial", "sans-serif";

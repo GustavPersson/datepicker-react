@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from "react";
 import * as Helpers from "./Helpers";
 import * as DateUtils from "./DateUtils";
 import * as LocaleUtils from "./LocaleUtils";
+import moment from "moment";
 
 const keys = {
   LEFT: 37,
@@ -414,6 +415,12 @@ export default class DayPicker extends Component {
     }
   }
 
+  handleMouseLeave() {
+    console.log(this.state);
+    this.state.weekDayDragging = false;
+    this.state.draggingDay = false;
+  }
+
   renderNavBar() {
     const baseClass = "DayPicker-NavButton DayPicker-NavButton";
     const isRTL = this.props.dir === "rtl";
@@ -470,7 +477,7 @@ export default class DayPicker extends Component {
 
   renderWeekDays(date, i) {
     const { locale, localeUtils, onWeekDayClick, onWeekDayMouseDown,onWeekDayMouseUp,onWeekDayMouseEnter, weekdayModifiers } = this.props;
-    const days = [];
+    const days = [<div className = "DayPicker-Weekday-Weeknumber">WK</div>];
 
     for (let i = 0; i < 7; i++) {
       let modifiers = [];
@@ -512,6 +519,7 @@ export default class DayPicker extends Component {
     const firstDayOfWeek = localeUtils.getFirstDayOfWeek(locale);
     return Helpers.getWeekArray(month, firstDayOfWeek).map((week, i) =>
       <div key={ i } className="DayPicker-Week" role="row">
+        <div className="DayPicker-Week-Number"> {moment(week[0]).week()} </div>
         { week.map(day => this.renderDay(month, day)) }
       </div>
     );
