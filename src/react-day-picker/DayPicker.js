@@ -59,7 +59,11 @@ export default class DayPicker extends Component {
     onDayMouseDown: PropTypes.func,
     onDayMouseUp: PropTypes.func,
     onWeekDayClick: PropTypes.func,
+
     onWeekNumberClick: PropTypes.func,
+    onWeekNumberMouseDown: PropTypes.func,
+    onWeekNumberMouseUp: PropTypes.func,
+    onWeekNumberMouseEnter: PropTypes.func,
 
     onWeekDayMouseEnter: PropTypes.func,
     onWeekDayMouseDown: PropTypes.func,
@@ -375,6 +379,27 @@ export default class DayPicker extends Component {
     this.props.onDayMouseLeave(e, day, modifiers);
   }
 
+
+  handleWeekNumberMouseDown(e, weekNumber, firstDayOfWeek) {
+    e.persist();
+    this.state.weekNumberDragging = true;
+
+    this.props.onWeekNumberMouseDown(e, weekNumber, firstDayOfWeek);
+  }
+
+  handleWeekNumberMouseUp(e, weekNumber, firstDayOfWeek) {
+    e.persist();
+    this.state.weekNumberDragging = false;
+
+    this.props.onWeekNumberMouseUp(e, weekNumber, firstDayOfWeek);
+  }
+
+  handleWeekNumberMouseEnter(e, weekNumber, firstDayOfWeek) {
+    e.persist();
+    this.props.onWeekNumberMouseEnter(e, weekNumber, firstDayOfWeek, this.state.weekNumberDragging);
+  }
+
+
   handleDayTouchTap(e, day, modifiers) {
     e.persist();
     if (modifiers.indexOf("outside") > -1) {
@@ -515,11 +540,21 @@ export default class DayPicker extends Component {
   }
 
   renderWeeksInMonth(month) {
-    const { locale, localeUtils } = this.props;
+    const { locale, localeUtils, onWeekNumberMouseDown, onWeekNumberMouseUp, onWeekNumberMouseEnter } = this.props;
     const firstDayOfWeek = localeUtils.getFirstDayOfWeek(locale);
     return Helpers.getWeekArray(month, firstDayOfWeek).map((week, i) =>
       <div key={ i } className="DayPicker-Week" role="row">
-        <div className="DayPicker-Week-Number"> {moment(week[0]).week()} </div>
+        <div
+        className="DayPicker-Week-Number"
+        onMouseDown= { onWeekNumberMouseDown ?
+          (e) => this.handleWeekNumberMouseDown(e, moment(week[0]).week(), week[0]) : null }
+        onMouseUp= { onWeekNumberMouseUp ?
+          (e) => this.handleWeekNumberMouseUp(e, moment(week[0]).week(), week[0]) : null }
+        onMouseEnter = { onWeekNumberMouseEnter ?
+          (e) => this.handleWeekNumberMouseEnter(e, moment(week[0]).week(), week[0]) : null }
+        >
+          {moment(week[0]).week()}
+        </div>
         { week.map(day => this.renderDay(month, day)) }
       </div>
     );

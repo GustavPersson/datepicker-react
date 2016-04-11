@@ -114,6 +114,31 @@ export default class Range extends React.Component {
     this.setState(state);
   }
 
+  handleWeekNumberMouseDown(e, weekNumber, firstDayOfWeek) {
+    this.handleWeekNumberClick(e, weekNumber, firstDayOfWeek);
+  }
+
+  handleWeekNumberMouseUp(e, weekNumber, firstDayOfWeek) {
+
+  }
+  handleWeekNumberMouseEnter(e, weekNumber, firstDayOfWeek, weekNumberDragging) {
+    if (weekNumberDragging) {
+      this.handleWeekNumberClick(e, weekNumber, firstDayOfWeek);
+    }
+  }
+
+  handleWeekNumberClick(e, weekNumber, firstDayOfWeek) {
+    let state = this.state;
+
+    if (state.selectedWeeks.indexOf(weekNumber) < 0) {
+      state = DateUtils.addWeekToCollection(weekNumber, firstDayOfWeek, state);
+    } else {
+      state = DateUtils.removeWeekFromCollection(weekNumber, firstDayOfWeek, state);
+    }
+
+    this.setState(state);
+  }
+
   resetState() {
     this.setState({
       selectedDates: [],
@@ -155,6 +180,9 @@ export default class Range extends React.Component {
           onWeekDayMouseDown = {this.handleWeekDayMouseDown.bind(this)}
           onWeekDayMouseUp = {this.handleWeekDayMouseUp.bind(this) }
           onWeekDayMouseEnter = {this.handleWeekDayMouseEnter.bind(this)}
+          onWeekNumberMouseDown = {this.handleWeekNumberMouseDown.bind(this)}
+          onWeekNumberMouseUp = {this.handleWeekNumberMouseUp.bind(this)}
+          onWeekNumberMouseEnter = {this.handleWeekNumberMouseEnter.bind(this)}
           LocaleUtils = {LocaleUtils}
           locale="se"
         />

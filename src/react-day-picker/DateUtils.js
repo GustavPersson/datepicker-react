@@ -188,6 +188,38 @@ export function removeWeekDaysFromCollection(weekday, firstDayOfMonth, collectio
   return myCollection;
 }
 
+export function addWeekToCollection(week, firstDayOfWeek, collection) {
+  let myCollection = collection;
+  const day = new Date(moment(firstDayOfWeek));
+
+  for (let i = 0; i < 7; i++) {
+    if (myCollection.selectedDates.indexOf(day.getTime()) < 0) {
+      myCollection.selectedDates.push(day.getTime());
+    }
+    day.setDate(day.getDate() + 1);
+  }
+
+  myCollection.selectedWeeks.push(week);
+
+  return myCollection;
+}
+
+
+export function removeWeekFromCollection(week, firstDayOfWeek, collection) {
+  let myCollection = collection;
+  const day = new Date(moment(firstDayOfWeek));
+
+  for (let i = 0; i < 7; i++) {
+    const dateIndex = myCollection.selectedDates.indexOf(day.getTime());
+    myCollection.selectedDates.splice(dateIndex, 1);
+    day.setDate(day.getDate() + 1);
+  }
+
+  myCollection.selectedWeeks.splice(myCollection.selectedWeeks.indexOf(week), 1);
+
+  return myCollection;
+}
+
 export default {
   addDayToRange,
   addDayToCollection,
@@ -200,5 +232,7 @@ export default {
   isDayBetween,
   isPastDay,
   isWeekdayInCollection,
-  removeWeekDaysFromCollection
+  removeWeekDaysFromCollection,
+  addWeekToCollection,
+  removeWeekFromCollection
 }
