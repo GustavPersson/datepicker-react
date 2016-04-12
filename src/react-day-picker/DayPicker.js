@@ -500,6 +500,38 @@ export default class DayPicker extends Component {
     );
   }
 
+  renderMonths(dates, i) {
+    const { locale, localeUtils, onCaptionClick, captionElement } = this.props;
+
+    const date = dates[0];
+    const months = [];
+
+    const caption = React.cloneElement(captionElement, {
+      date, localeUtils, locale,
+      onClick: onCaptionClick ? e => this.handleCaptionClick(e, dates) : null
+    });
+
+    for (let i = 0; i < dates.length; i++) {
+      months.push(this.renderWeeksInMonth(dates[i]));
+    }
+
+    return (
+      <div
+        className="DayPicker-Month"
+        key={ i }>
+        { caption }
+        <div className="DayPicker-Weekdays" role="rowgroup">
+          <div className="DayPicker-WeekdaysRow" role="columnheader">
+            { this.renderWeekDays(dates[0]) }
+          </div>
+        </div>
+        <div className="DayPicker-Body" role="rowgroup">
+          { months}
+        </div>
+      </div>
+    );
+  }
+
   renderWeekDays(date, i) {
     const { locale, localeUtils, onWeekDayClick, onWeekDayMouseDown,onWeekDayMouseUp,onWeekDayMouseEnter, weekdayModifiers } = this.props;
     const days = [<div className = "DayPicker-Weekday-Weeknumber">WK</div>];
@@ -650,7 +682,7 @@ export default class DayPicker extends Component {
     let month;
     for (let i = 0; i < numberOfMonths; i++) {
       month = DateUtils.addMonths(currentMonth, i);
-      months.push(this.renderMonth(month, i));
+      months.push(month);
     }
 
     if (reverseMonths) {
@@ -666,7 +698,7 @@ export default class DayPicker extends Component {
         tabIndex={ canChangeMonth && attributes.tabIndex }
         onKeyDown={ e => this.handleKeyDown(e) }>
         { canChangeMonth && this.renderNavBar() }
-        { months }
+        { this.renderMonths(months) }
       </div>
     );
   }
