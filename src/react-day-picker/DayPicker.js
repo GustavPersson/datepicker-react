@@ -34,6 +34,7 @@ export default class DayPicker extends Component {
 
     modifiers: PropTypes.object,
     weekdayModifiers: PropTypes.object,
+    weekNumberModifiers: PropTypes.object,
 
     locale: PropTypes.string,
     localeUtils: PropTypes.shape({
@@ -399,7 +400,6 @@ export default class DayPicker extends Component {
     this.props.onWeekNumberMouseEnter(e, weekNumber, firstDayOfWeek, this.state.weekNumberDragging);
   }
 
-
   handleDayTouchTap(e, day, modifiers) {
     e.persist();
     if (modifiers.indexOf("outside") > -1) {
@@ -540,12 +540,16 @@ export default class DayPicker extends Component {
   }
 
   renderWeeksInMonth(month) {
-    const { locale, localeUtils, onWeekNumberMouseDown, onWeekNumberMouseUp, onWeekNumberMouseEnter } = this.props;
+    const { locale, localeUtils, onWeekNumberMouseDown, onWeekNumberMouseUp, onWeekNumberMouseEnter, weekNumberModifiers } = this.props;
     const firstDayOfWeek = localeUtils.getFirstDayOfWeek(locale);
+
+    const className = "DayPicker-Week-Number";
+
+
     return Helpers.getWeekArray(month, firstDayOfWeek).map((week, i) =>
       <div key={ i } className="DayPicker-Week" role="row">
         <div
-        className="DayPicker-Week-Number"
+        className= {weekNumberModifiers.selected(moment(week[0]).week()) ? className + " DayPicker-Week-Number--selected" : "DayPicker-Week-Number"}
         onMouseDown= { onWeekNumberMouseDown ?
           (e) => this.handleWeekNumberMouseDown(e, moment(week[0]).week(), week[0]) : null }
         onMouseUp= { onWeekNumberMouseUp ?

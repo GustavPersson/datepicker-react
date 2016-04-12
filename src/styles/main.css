@@ -121,6 +121,11 @@
       background-color: #eaecec;
     }
 
+      .DayPicker-Week-Number--selected {
+        background: #5581B5;
+        color: white;
+      }
+
       .DayPicker-Day {
         display: table-cell;
         padding: .5rem;

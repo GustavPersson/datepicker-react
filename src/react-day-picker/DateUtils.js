@@ -220,6 +220,10 @@ export function removeWeekFromCollection(week, firstDayOfWeek, collection) {
   return myCollection;
 }
 
+export function isWeekInCollection(weekNumber, collection) {
+  return collection.selectedWeeks.indexOf(weekNumber) > -1;
+}
+
 export default {
   addDayToRange,
   addDayToCollection,
@@ -232,6 +236,7 @@ export default {
   isDayBetween,
   isPastDay,
   isWeekdayInCollection,
+  isWeekInCollection,
   removeWeekDaysFromCollection,
   addWeekToCollection,
   removeWeekFromCollection

@@ -166,6 +166,10 @@ export default class Range extends React.Component {
       weekdaySelected: weekday => DateUtils.isWeekdayInCollection(weekday, this.state)
     };
 
+    const weekNumberModifiers = {
+      selected: weekNumber => DateUtils.isWeekInCollection(weekNumber, this.state)
+    };
+
     return (
       <div className="RangeExample">
 
@@ -174,6 +178,7 @@ export default class Range extends React.Component {
           numberOfMonths = { 1 }
           modifiers = { modifiers }
           weekdayModifiers = { weekdayModifiers }
+          weekNumberModifiers = {weekNumberModifiers}
           onDayMouseDown = {this.handleDayMouseDown.bind(this)}
           onDayMouseUp = {this.handleDayMouseUp.bind(this) }
           onDayMouseEnter = {this.handleDayMouseEnter.bind(this)}
