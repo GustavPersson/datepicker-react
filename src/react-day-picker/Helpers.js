@@ -88,5 +88,6 @@ export function startOfMonth(d) {
 }
 
 export default {
-  getFirstDayOfMonth
+  getFirstDayOfMonth,
+  getWeekArray
 }

@@ -154,7 +154,7 @@
 }
 
 .DayPicker-Day--outside {
-  cursor: default;
+
   color: #dce0e0;
 }
 
@@ -165,9 +165,13 @@
   background-color: #f7f8f8;
 }
 
-.DayPicker-Day--selected:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside) {
+.DayPicker-Day--selected:not(.DayPicker-Day--disabled) {
   color: #FFF;
   background-color: #4A90E2;
+}
+
+.DayPicker-Day--selected.DayPicker-Day--outside {
+  opacity: 0.8;
 }
 
 html {

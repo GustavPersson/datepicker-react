@@ -18,7 +18,7 @@ export default class Range extends React.Component {
   handleDayClick(e, day, modifiers) {
     let state = this.state;
 
-    if (this.state.selectedWeekDays.length > 0 && DateUtils.isDayInCollection(day, state)) {
+    if ((this.state.selectedWeekDays.length > 0 || this.state.selectedWeeks.length > 0) && DateUtils.isDayInCollection(day, state)) {
       state = {
         selectedDates: [],
         selectedWeeks: [],
@@ -36,6 +36,26 @@ export default class Range extends React.Component {
 
       const firstDayOfMonth = Helpers.getFirstDayOfMonth(day);
       state = DateUtils.addWeekDaysToCollection(moment(day).weekday(), firstDayOfMonth, state);
+
+    } else if (this.state.selectedWeeks.length > 0) {
+      state = {
+        selectedDates: [],
+        selectedWeeks: [],
+        selectedWeekDays: []
+      };
+      const weekNumber = moment(day).week();
+      const weeksInMonth = Helpers.getWeekArray(day);
+      let firstDayOfWeek;
+
+      for (let i = 0; i < weeksInMonth.length; i++) {
+        if (moment(weeksInMonth[i][0]).week() === weekNumber) {
+          firstDayOfWeek = weeksInMonth[i][0];
+          break;
+        }
+      }
+
+      state = DateUtils.addWeekToCollection(weekNumber, firstDayOfWeek, state);
+
     } else {
       state = DateUtils.addDayToCollection(day.getTime(), state);
     }
@@ -177,6 +197,7 @@ export default class Range extends React.Component {
           ref="daypicker"
           numberOfMonths = { 1 }
           modifiers = { modifiers }
+          enableOutsideDays = { true }
           weekdayModifiers = { weekdayModifiers }
           weekNumberModifiers = {weekNumberModifiers}
           onDayMouseDown = {this.handleDayMouseDown.bind(this)}

@@ -639,7 +639,7 @@ export default class DayPicker extends Component {
     const { currentMonth } = this.state;
     let className = `DayPicker DayPicker--${locale}`;
 
-    if (!this.props.onDayClick && !this.props.onDayTouchTap) {
+    if (!this.props.onDayClick && !this.props.onDayTouchTap && (!this.props.onDayMouseDown || !this.props.onDayMouseUp)) {
       className = `${className} DayPicker--interactionDisabled`;
     }
     if (attributes.className) {
