@@ -10,3 +10,5 @@ work in progress by toggling the `renderMonthsVertically`-prop to true, and incr
 When that is done, the calendar will draw the number of requested months vertically, but there will be duplicate days and weeks
 when the months change, because I didn't change that draw logic from react-day-picker yet.
 
+# Running
+To start, just clone, run `npm install` and `npm start`, then navigate to http://localhost:3030.
