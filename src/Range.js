@@ -98,6 +98,14 @@ export default class Range extends React.Component {
     this.resetState();
   }
 
+  addMoreMonths(e) {
+    e.preventDefault();
+    const numberOfMonths = this.state.numberOfMonths;
+    this.setState({
+      numberOfMonths: numberOfMonths + 1
+    });
+  }
+
   handleWeekDayClick(e, weekday, firstDayOfMonth, modifiers) {
     let state = this.state;
 
@@ -217,6 +225,8 @@ export default class Range extends React.Component {
         }
         <div> { selectedDates.map(day => this.renderSelectedDay(day)) } </div>
 
+        <a href="#" onClick={this.addMoreMonths.bind(this)}>Add Another Month</a>
+        <br/>
         <a href="#" onClick={ this.handleResetClick.bind(this) }>Reset</a>
 
       </div>
