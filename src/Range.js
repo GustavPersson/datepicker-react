@@ -13,7 +13,7 @@ export default class Range extends React.Component {
     selectedDates: [],
     selectedWeeks: [],
     selectedWeekDays: [],
-    numberOfMonths: 2
+    numberOfMonths: 1
   };
 
   handleDayClick(e, day, modifiers) {
@@ -197,6 +197,7 @@ export default class Range extends React.Component {
         <DayPicker
           ref="daypicker"
           numberOfMonths = { this.state.numberOfMonths }
+          renderMonthsVertically = {false}
           modifiers = { modifiers }
           enableOutsideDays = { true }
           weekdayModifiers = { weekdayModifiers }
@@ -210,7 +211,6 @@ export default class Range extends React.Component {
           onWeekNumberMouseDown = {this.handleWeekNumberMouseDown.bind(this)}
           onWeekNumberMouseUp = {this.handleWeekNumberMouseUp.bind(this)}
           onWeekNumberMouseEnter = {this.handleWeekNumberMouseEnter.bind(this)}
-          renderMonthsVertically = {false}
           LocaleUtils = {LocaleUtils}
           locale="se"
         />
