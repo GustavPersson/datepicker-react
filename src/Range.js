@@ -210,6 +210,7 @@ export default class Range extends React.Component {
           onWeekNumberMouseDown = {this.handleWeekNumberMouseDown.bind(this)}
           onWeekNumberMouseUp = {this.handleWeekNumberMouseUp.bind(this)}
           onWeekNumberMouseEnter = {this.handleWeekNumberMouseEnter.bind(this)}
+          renderMonthsVertically = {false}
           LocaleUtils = {LocaleUtils}
           locale="se"
         />

@@ -667,7 +667,7 @@ export default class DayPicker extends Component {
   }
 
   render() {
-    const { numberOfMonths, locale, canChangeMonth, reverseMonths, ...attributes } = this.props;
+    const { numberOfMonths, locale, canChangeMonth, reverseMonths, renderMonthsVertically, ...attributes } = this.props;
     const { currentMonth } = this.state;
     let className = `DayPicker DayPicker--${locale}`;
 
@@ -678,11 +678,17 @@ export default class DayPicker extends Component {
       className = `${className} ${attributes.className}`;
     }
 
+
     const months = [];
     let month;
+
     for (let i = 0; i < numberOfMonths; i++) {
       month = DateUtils.addMonths(currentMonth, i);
-      months.push(month);
+      if(renderMonthsVertically) {
+        months.push(month);
+      } else {
+        months.push(this.renderMonth(month, i));
+      }
     }
 
     if (reverseMonths) {
@@ -698,7 +704,8 @@ export default class DayPicker extends Component {
         tabIndex={ canChangeMonth && attributes.tabIndex }
         onKeyDown={ e => this.handleKeyDown(e) }>
         { canChangeMonth && this.renderNavBar() }
-        { this.renderMonths(months) }
+        { renderMonthsVertically && this.renderMonths(months) }
+        { !renderMonthsVertically && months}
       </div>
     );
   }
