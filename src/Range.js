@@ -20,30 +20,26 @@ export default class Range extends React.Component {
     let state = this.state;
 
     if ((this.state.selectedWeekDays.length > 0 || this.state.selectedWeeks.length > 0) && DateUtils.isDayInCollection(day, state)) {
-      state = {
-        selectedDates: [],
-        selectedWeeks: [],
-        selectedWeekDays: []
-      };
+      state.selectedWeeks = [];
+      state.selectedDates = [];
+      state.selectedWeekDays = [];
 
       state = DateUtils.addDayToCollection(day.getTime(), state);
     } else if (this.state.selectedWeekDays.length > 0) {
 
-      state = {
-        selectedDates: [],
-        selectedWeeks: [],
-        selectedWeekDays: []
-      };
+      state.selectedWeeks = [];
+      state.selectedDates = [];
+      state.selectedWeekDays = [];
+
 
       const firstDayOfMonth = Helpers.getFirstDayOfMonth(day);
       state = DateUtils.addWeekDaysToCollection(moment(day).weekday(), firstDayOfMonth, state);
 
     } else if (this.state.selectedWeeks.length > 0) {
-      state = {
-        selectedDates: [],
-        selectedWeeks: [],
-        selectedWeekDays: []
-      };
+      state.selectedWeeks = [];
+      state.selectedDates = [];
+      state.selectedWeekDays = [];
+
       const weekNumber = moment(day).week();
       const weeksInMonth = Helpers.getWeekArray(day);
       let firstDayOfWeek;
@@ -197,7 +193,7 @@ export default class Range extends React.Component {
         <DayPicker
           ref="daypicker"
           numberOfMonths = { this.state.numberOfMonths }
-          renderMonthsVertically = {false}
+          renderMonthsVertically = { true }
           modifiers = { modifiers }
           enableOutsideDays = { true }
           weekdayModifiers = { weekdayModifiers }

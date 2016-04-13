@@ -136,9 +136,9 @@ export function isDayInCollection(day, collection) {
   return collection.selectedDates.indexOf(day.getTime()) > -1;
 }
 
-export function addWeekDaysToCollection(weekday, firstDayOfMonth, collection={selectedDates: []}) {
+export function addWeekDaysToCollection(weekday, firstDayOfMonth, collection) {
   const d = new Date(firstDayOfMonth),
-    month = d.getMonth(),
+    month = d.getMonth() + collection.numberOfMonths,
     myCollection = collection;
 
   d.setDate(1);
@@ -149,7 +149,7 @@ export function addWeekDaysToCollection(weekday, firstDayOfMonth, collection={se
   }
 
   // Get all the other Mondays in the month
-  while (d.getMonth() === month) {
+  while (d.getMonth() < month) {
     myCollection.selectedDates.push(d.getTime());
     d.setDate(d.getDate() + 7);
   }
@@ -163,9 +163,9 @@ export function isWeekdayInCollection(weekday, collection) {
   return collection.selectedWeekDays.indexOf(weekday) > -1;
 }
 
-export function removeWeekDaysFromCollection(weekday, firstDayOfMonth, collection={selectedDates: []}) {
+export function removeWeekDaysFromCollection(weekday, firstDayOfMonth, collection) {
   const d = new Date(firstDayOfMonth),
-    month = d.getMonth(),
+    month = d.getMonth() + collection.numberOfMonths,
     myCollection = collection;
 
   d.setDate(1);
@@ -176,7 +176,7 @@ export function removeWeekDaysFromCollection(weekday, firstDayOfMonth, collectio
   }
 
   // Get all the other Mondays in the month
-  while (d.getMonth() === month) {
+  while (d.getMonth() < month) {
     const selectedDateIndex = myCollection.selectedDates.indexOf(d.getTime());
     myCollection.selectedDates.splice(selectedDateIndex, 1);
     d.setDate(d.getDate() + 7);
